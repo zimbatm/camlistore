@@ -4,6 +4,7 @@
 \#*\#
 .\#*
 .*.swp
+.vagrant
 logs
 _obj
 [68].out
