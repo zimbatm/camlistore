@@ -1,0 +1,25 @@
+#!/bin/sh
+#
+# A little script to prepare Ubuntu boxes to build and run camlistore.
+#
+set -e
+
+apt-get update -qq
+
+# NOTE: JRE is to build the JavaScript frontend
+DEBIAN_FRONTEND=noninteractive apt-get install -qy \
+  libsqlite3-dev sqlite3 pkg-config git make default-jre-headless wget
+
+cd /usr/local
+GORELEASE=go1.1.1.linux-amd64.tar.gz
+if ! [ -f $GORELEASE ]; then
+  rm -rf go
+  wget -nv https://go.googlecode.com/files/$GORELEASE
+  tar xzf $GORELEASE
+fi
+
+# It's better than adding go/bin in the PATH. The env might not be updated.
+cd /usr/local/bin
+for file in `ls /usr/local/go/bin` ; do
+  ln -sf /usr/local/go/bin/$file
+done
